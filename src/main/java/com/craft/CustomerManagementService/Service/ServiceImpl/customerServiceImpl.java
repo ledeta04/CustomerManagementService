@@ -5,9 +5,16 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
 import com.craft.CustomerManagementService.Dto.CustomerDto;
 import com.craft.CustomerManagementService.Dto.DeleteCustomerDto;
+import com.craft.CustomerManagementService.Dto.Leads;
 import com.craft.CustomerManagementService.JpaRepo.customerRepo;
 import com.craft.CustomerManagementService.Model.Address;
 import com.craft.CustomerManagementService.Model.CustomFields;
@@ -23,7 +30,12 @@ public class customerServiceImpl implements customerService {
 	customerRepo customerRepo;
 	
 	@Autowired
+	RestTemplate restTemplate;
+	
+	@Autowired
 	ModelMapper modelMapper;
+	
+	private final String url = "http://localhost:9094/leads/convert";
 	
 
 	@Override
@@ -98,16 +110,6 @@ public class customerServiceImpl implements customerService {
 		
 		return customer;
 		
-		
-		
-//	 Optional<Customer> optional = customerRepo.findById(customerId);
-//	 
-//	 		if(optional.isPresent()) {
-//	 			
-//	 			return optional.get();
-//	 		}
-
-//		return null;
 	}
 
 
@@ -137,5 +139,37 @@ public class customerServiceImpl implements customerService {
   }
 }
 
+
+	@Override
+	public Leads convertLeadsToCustomers(String leadId , Leads leads) {
+		
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<Leads> requestEntity = new HttpEntity<>(leads, headers);
+		
+		ResponseEntity<Leads> responseEntity = restTemplate.exchange(
+				
+				url, 
+				HttpMethod.PUT, 
+				requestEntity, 
+				Leads.class);
+		
+		if(responseEntity.getStatusCode().is2xxSuccessful()) {
+			
+			return responseEntity.getBody();
+			
+		}else {
+			
+			return null;
+		}
+	}
+
+
+	@Override
+	public Iterable<Customer> getAllCustomers() {
+
+	     customerRepo.findAll();
+	     
+	     return customerRepo.findAll();
+	}
 
 }

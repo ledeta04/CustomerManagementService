@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.craft.CustomerManagementService.Dto.Leads;
 import com.craft.CustomerManagementService.Model.Customer;
 import com.craft.CustomerManagementService.Service.customerService;
 
@@ -61,4 +62,15 @@ public class customerController {
 			return new ResponseEntity<>(customerService.deleteCustomerById(customerId), HttpStatus.NOT_FOUND);
 		}
 	}
+	@PutMapping("/convert/{leadId}")
+	public ResponseEntity<?> convertLeadsToCustomers(@PathVariable("leadId") String leadId , @RequestBody Leads leads ){
+		
+		return new ResponseEntity<>(customerService.convertLeadsToCustomers(leadId, leads), HttpStatus.ACCEPTED);
+	}
+	@GetMapping("/getAll")
+	ResponseEntity<?> getAllCustomer(){
+		
+		return new ResponseEntity<>(customerService.getAllCustomers(), HttpStatus.OK);
+	}
+
 }
