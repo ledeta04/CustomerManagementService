@@ -16,6 +16,7 @@
 	<properties>
 		<java.version>17</java.version>
 		<spring-cloud.version>2023.0.1</spring-cloud.version>
+		<version>8.0.1.Final</version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -43,7 +44,7 @@
     <dependency>
 	    <groupId>org.hibernate.validator</groupId>
 	    <artifactId>hibernate-validator</artifactId>
-	    <version>8.0.1.Final</version>
+	    
 	</dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>

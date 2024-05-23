@@ -25,6 +25,7 @@ public class userServiceImpl implements userService {
 		try {
 			
 			users.setPassword(passwordEncoder.encode(users.getPassword()));
+			
 			userRepo.save(users);
 			
 			return "Customer is registered";
